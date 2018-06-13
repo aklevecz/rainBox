@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - postprocessing backgrounds</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				margin: 0px;
+				background-color: #000;
+				overflow: hidden;
+				font-family:Monospace;
+				font-size:13px;
+				margin: 0px;
+				text-align:center;
+				overflow: hidden;
+			}
+
+			a { color: #88f; }
+
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				display:block;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+		<video id="video" src="trippyrain.mp4" loop style="display:none"></video>
+		<script src="../build/three.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+		<script src="js/libs/dat.gui.min.js"></script>
+
+		<script src="js/shaders/CopyShader.js"></script>
+
+		<script src="js/postprocessing/EffectComposer.js"></script>
+		<script src="js/postprocessing/ClearPass.js"></script>
+		<script src="js/postprocessing/RenderPass.js"></script>
+		<script src="js/postprocessing/TexturePass.js"></script>
+		<script src="js/postprocessing/CubeTexturePass.js"></script>
+		<script src="js/postprocessing/ShaderPass.js"></script>
+		<script src="js/THREEx.KeyboardState.js"></script>
+<script src="js/THREEx.FullScreen.js"></script>
+<script src="js/THREEx.WindowResize.js"></script>
+
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/FirstPersonControls.js"></script>
+
+		<script src="js/virtualjoystick.js"></script>
+<script src="js/touch-fps-controls.js"></script>
+
+<button id="test" 
+	style="user-select:none;position: absolute;background-color:red;margin:50px;"
+	>CHICKEN ASS</button>
+
+	<button id="test2" 
+	style="user-select:none;position: absolute;background-color:red;margin:80px;"
+	>CHICKEN ASS</button>
+
+
+		<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+
+		<script>
+
+			var clock = new THREE.Clock();
+			var camControls;
+			var container, stats;
+			var camera, scene, renderer;
+            var particleMaterial;
+            var controls;
+
+			var raycaster;
+			var mouse;
+
+			var objects = [];
+			var portal;
+
+			var vidTexture
+
+			init();
+			animate();
+
+			function init() {
+
+				
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000000 );
+        // position and point the camera to the center of the scene
+        camera.position.x = 100;
+        camera.position.y = 10;
+        camera.position.z = 10;
+        camera.lookAt(new THREE.Vector3(0, 0, -250000));
+
+
+        camControls = new THREE.FirstPersonControls(camera);
+        camControls.lookSpeed = 0.4;
+        camControls.movementSpeed = 20000;
+        camControls.noFly = true;
+        camControls.lookVertical = true;
+        camControls.constrainVertical = true;
+        camControls.verticalMin = 1.0;
+        camControls.verticalMax = 2.0;
+        camControls.lon = -150;
+		camControls.lat = 120;
+		
+		console.log(camControls.onKeyDown);
+
+
+			document.getElementById('test').addEventListener("click", function(){
+				camControls.activeLook = false;
+				camControls.moveForward = true;
+			})
+
+			document.getElementById('test2').addEventListener("click", function(){
+				camControls.activeLook = true;
+				camControls.moveForward = false;
+			})
+				scene = new THREE.Scene();
+
+
+
+				//scene.background = new THREE.Color( 0x000000 );
+				console.log(scene);
+				var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+				
+				function getRandomInt(min, max) {
+					min = Math.ceil(min);
+					max = Math.floor(max);
+					return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+				}
+				for ( var i = 0; i < 1000; i ++ ) {
+
+					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: 0.5 } ) );
+					object.position.x = getRandomInt(-500000,500000);
+					object.position.y = getRandomInt(-500000,500000);
+					object.position.z = getRandomInt(-500000,500000);
+
+					object.scale.x = Math.random() * 20 + 1;
+					object.scale.y = Math.random() * 20 + 1;
+					object.scale.z = Math.random() * 20 + 1;
+
+					object.rotation.x = Math.random() * 2 * Math.PI;
+					object.rotation.y = Math.random() * 2 * Math.PI;
+					object.rotation.z = Math.random() * 2 * Math.PI;
+
+					scene.add( object );
+
+					objects.push( object );
+
+				}
+
+					var geometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
+
+					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: "red" } ) );
+					object.position.z = -250000;
+					scene.add(object);
+
+				var imagePrefix = "images/dawnmountain-";
+				var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				var imageSuffix = ".png";
+
+				var skyGeometry = new THREE.CubeGeometry(500000,500000,500000);
+
+				var material_array = [];
+
+				var video = document.getElementById('video');
+				video.play();
+				document.body.addEventListener('click', function(){
+					video.play();
+				}, false);
+				vidTexture = new THREE.VideoTexture( video );
+				vidTexture.minFilter = THREE.LinearFilter;
+				vidTexture.magFilter = THREE.LinearFilter;
+				for (var i=0; i < 6 ; i++){
+					console.log('meepo')
+					material_array.push( new THREE.MeshBasicMaterial({
+						 //map: new THREE.TextureLoader().load(imagePrefix + directions[i] + imageSuffix),
+							map: vidTexture,
+						side: THREE.BackSide,
+					}));
+				}
+
+				var skyMaterial = new THREE.MeshFaceMaterial( material_array );
+				var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+				scene.add(skyBox);
+
+				// var PI2 = Math.PI * 2;
+				// particleMaterial = new THREE.SpriteCanvasMaterial( {
+
+				// 	color: 0xFFFFFF,
+				// 	program: function ( context ) {
+
+				// 		context.beginPath();
+				// 		context.arc( 0, 0, 0.5, 0, PI2, true );
+				// 		context.fill();
+
+				// 	}
+
+				// } );
+
+				//
+
+				raycaster = new THREE.Raycaster();
+				mouse = new THREE.Vector2();
+
+				renderer = new THREE.WebGLRenderer({ alpha: true } );
+				//renderer.setClearColor(new THREE.Color(0x000, 1.0));
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+			
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				event.preventDefault();
+
+				event.clientX = event.touches[0].clientX;
+				event.clientY = event.touches[0].clientY;
+				onDocumentMouseDown( event );
+
+			}
+
+			function onDocumentMouseDown( event ) {
+
+				event.preventDefault();
+
+				mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+
+				raycaster.setFromCamera( mouse, camera );
+
+				var intersects = raycaster.intersectObjects( objects );
+				
+				var distance = raycaster.ray.origin.distanceTo( intersects[0].point );
+				
+
+				if ( intersects.length > 0 && distance < 20000 ) {
+
+					intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+
+				}
+			}
+
+			//
+
+			function animate() {
+				var delta = clock.getDelta();
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+                camControls.update(delta);
+
+
+			}
+
+			var radius = 600;
+			var theta = 0;
+
+			function render() {
+
+				theta += 0.1;
+
+				vidTexture.needsUpdate = true;
+				console.log(portal);
+				for (var i = 0; i < objects.length ; i++){
+					objects[i].rotation.y += Math.sin(Math.random()/20);
+					objects[i].rotation.x += Math.cos(Math.random())/200;
+				}
+
+				if (camera.position.z < -249914) {
+					camera.position.z = -249914;
+				}
+				if(camera.position.z > 249914) {
+					camera.position.z = 249914;
+				}
+				if (camera.position.x < -249914) {
+					camera.position.x = -249914;
+				}
+				if(camera.position.x > 249914) {
+					camera.position.x = 249914;
+				}
+				if (camera.position.y < -249914) {
+					camera.position.y = -249914;
+				}
+				if(camera.position.y > 249914) {
+					camera.position.y = 249914;
+				}
+
+				renderer.render(scene, camera);
+
+			}
+
+		</script>
+	
+	</body>
+</html>
