@@ -281,6 +281,7 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 	this.domElement.addEventListener( 'contextmenu', contextmenu, false );
     this.domElement.addEventListener( 'mousemove', _onMouseMove, false );
     this.domElement.addEventListener( 'touchstart', _onMouseMove, false);
+    this.domElement.addEventListener( 'touchmove', _onMouseMove, false);
     this.domElement.addEventListener( 'mousedown', null, false );
 	this.domElement.addEventListener( 'mouseup', null, false );
 
