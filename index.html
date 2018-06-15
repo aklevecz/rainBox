@@ -66,19 +66,57 @@
 		<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
 
 		<script>
+		function getRandomInt(min, max) {
+							min = Math.ceil(min);
+							max = Math.floor(max);
+							return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+						}
+		function makeBoxLand(){
+			var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+				
+				
+				for ( var i = 0; i < 1000; i ++ ) {
 
+					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: .4, transparent:true } ) );
+					// object.position.x = getRandomInt(-250000,250000);
+					// object.position.y = getRandomInt(-250000,250000);
+					// object.position.z = getRandomInt(-250000,250000);
+					object.data = {x:getRandomInt(-250000,250000),
+								   y:getRandomInt(-250000,250000),
+								   z:getRandomInt(-250000,250000)};
+
+					
+
+					
+					object.scale.x = Math.random() * 20 + 1;
+					object.scale.y = Math.random() * 20 + 1;
+					object.scale.z = Math.random() * 20 + 1;
+
+					object.rotation.x = Math.random() * 2 * Math.PI;
+					object.rotation.y = Math.random() * 2 * Math.PI;
+					object.rotation.z = Math.random() * 2 * Math.PI;
+
+					scene.add( object );
+
+					objects.push( object );
+
+				}
+		}
 			var clock = new THREE.Clock();
 			var camControls;
 			var container, stats;
 			var camera, scene, renderer;
             var particleMaterial;
-            var controls;
+			var controls;
+			
+			var switcher;
 
 			var raycaster;
 			var mouse;
 
 			var objects = [];
 			var portal;
+			var phase = 1;
 
 			var vidTexture
 
@@ -94,33 +132,32 @@
 
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000000 );
-        // position and point the camera to the center of the scene
-        camera.position.x = 100;
-        camera.position.y = 10;
-        camera.position.z = 10;
-        camera.lookAt(new THREE.Vector3(0, 0, -250000));
+				// position and point the camera to the center of the scene
+				camera.position.x = 100;
+				camera.position.y = 10;
+				camera.position.z = -10000;
+				camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 
-        camControls = new THREE.FirstPersonControls(camera);
-        camControls.lookSpeed = 0.4;
-        camControls.movementSpeed = 20000;
-        camControls.noFly = true;
-        camControls.lookVertical = true;
-        camControls.constrainVertical = true;
-        camControls.verticalMin = 1.0;
-        camControls.verticalMax = 2.0;
-        camControls.lon = -150;
-		camControls.lat = 120;
+				camControls = new THREE.FirstPersonControls(camera);
+				camControls.lookSpeed = 0.4;
+				camControls.movementSpeed = 20000;
+				camControls.noFly = true;
+				camControls.lookVertical = true;
+				camControls.constrainVertical = true;
+				camControls.verticalMin = 1.0;
+				camControls.verticalMax = 2.0;
+				camControls.lon = -150;
+				camControls.lat = 120;
 		
-		console.log(camControls.onKeyDown);
 
 
-			document.getElementById('test').addEventListener("click", function(){
+			document.getElementById('test').addEventListener("mousedown", function(){
 				camControls.activeLook = false;
 				camControls.moveForward = true;
 			})
 
-			document.getElementById('test2').addEventListener("click", function(){
+			document.getElementById('test2').addEventListener("mousedown", function(){
 				camControls.activeLook = true;
 				camControls.moveForward = false;
 			})
@@ -130,39 +167,42 @@
 
 				//scene.background = new THREE.Color( 0x000000 );
 				console.log(scene);
-				var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+				// var geometry = new THREE.BoxGeometry( 100, 100, 100 );
 				
-				function getRandomInt(min, max) {
-					min = Math.ceil(min);
-					max = Math.floor(max);
-					return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-				}
-				for ( var i = 0; i < 1000; i ++ ) {
+				
+				// for ( var i = 0; i < 1000; i ++ ) {
 
-					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: 0.5 } ) );
-					object.position.x = getRandomInt(-500000,500000);
-					object.position.y = getRandomInt(-500000,500000);
-					object.position.z = getRandomInt(-500000,500000);
+				// 	var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: 0.5 } ) );
+				// 	object.position.x = getRandomInt(-250000,250000);
+				// 	object.position.y = getRandomInt(-250000,250000);
+				// 	object.position.z = getRandomInt(-250000,250000);
 
-					object.scale.x = Math.random() * 20 + 1;
-					object.scale.y = Math.random() * 20 + 1;
-					object.scale.z = Math.random() * 20 + 1;
+				// 	object.scale.x = Math.random() * 20 + 1;
+				// 	object.scale.y = Math.random() * 20 + 1;
+				// 	object.scale.z = Math.random() * 20 + 1;
 
-					object.rotation.x = Math.random() * 2 * Math.PI;
-					object.rotation.y = Math.random() * 2 * Math.PI;
-					object.rotation.z = Math.random() * 2 * Math.PI;
+				// 	object.rotation.x = Math.random() * 2 * Math.PI;
+				// 	object.rotation.y = Math.random() * 2 * Math.PI;
+				// 	object.rotation.z = Math.random() * 2 * Math.PI;
 
-					scene.add( object );
+				// 	scene.add( object );
 
-					objects.push( object );
+				// 	objects.push( object );
 
-				}
+				// }
+					var geometry = new THREE.BoxGeometry(500,500,500)
+					var material = new THREE.MeshBasicMaterial({color:"green", opacity:.3});
+					switcher = new THREE.Mesh(geometry, material);
+					switcher.name = "switch";
+					switcher.data = {x:0,y:0,z:0};
+					objects.push(switcher);
+					scene.add(switcher);
+					switcher.material.transparent = true;
+					var geometry = new THREE.BoxGeometry( 100000, 100000, 10 );
 
-					var geometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
-
-					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: "red" } ) );
-					object.position.z = -250000;
-					scene.add(object);
+					portal = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: "red" } ) );
+					portal.position.z = -249000;
+					scene.add(portal);
 
 				var imagePrefix = "images/dawnmountain-";
 				var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
@@ -259,11 +299,15 @@
 				raycaster.setFromCamera( mouse, camera );
 
 				var intersects = raycaster.intersectObjects( objects );
+
+				
 				
 				var distance = raycaster.ray.origin.distanceTo( intersects[0].point );
 				
 
 				if ( intersects.length > 0 && distance < 20000 ) {
+					phase = 2;
+					if (intersects[0].object.name==="switch") makeBoxLand();
 
 					intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 
@@ -290,33 +334,102 @@
 			function render() {
 
 				theta += 0.1;
-
+				var time = clock.elapsedTime;
 				vidTexture.needsUpdate = true;
-				console.log(portal);
+				
+
+				
+				
 				for (var i = 0; i < objects.length ; i++){
+					var {x,y,z} = objects[i].data;
+					
+					
+					if (x>0){
+						if (x > objects[i].position.x){
+							objects[i].position.x+=100
+						}
+					} else {
+						if (x < objects[i].position.x){
+							objects[i].position.x-=100
+						}
+					}
+					
+					if (y>0){
+						if (y > objects[i].position.y){
+							objects[i].position.y+=100
+						}
+					} else {
+						if (y < objects[i].position.y){
+							objects[i].position.y-=100
+						}
+					}
+
+					if (z > 0) {
+						if (z > objects[i].position.z){
+							objects[i].position.z+=100
+						}
+					} else{
+						if (z < objects[i].position.z){
+							objects[i].position.z-=100
+						}
+					}
+
 					objects[i].rotation.y += Math.sin(Math.random()/20);
 					objects[i].rotation.x += Math.cos(Math.random())/200;
 				}
 
-				if (camera.position.z < -249914) {
-					camera.position.z = -249914;
-				}
-				if(camera.position.z > 249914) {
-					camera.position.z = 249914;
-				}
-				if (camera.position.x < -249914) {
-					camera.position.x = -249914;
-				}
-				if(camera.position.x > 249914) {
-					camera.position.x = 249914;
-				}
-				if (camera.position.y < -249914) {
-					camera.position.y = -249914;
-				}
-				if(camera.position.y > 249914) {
-					camera.position.y = 249914;
-				}
+				//phase 1
+				//console.log(camera.position);
+				var p = camera.position;
+				
+				if (phase<3){
+					if (camera.position.z <= -250000 && phase===2){
+						phase = 3;
+					} else {
 
+						if (phase===2){
+							if (camera.position.z < -249914 &&
+								(
+									(p.x > 50000 || p.x < -50000) || 
+									(p.y > 50000 || p.y < -50000))
+								
+							   ) {
+									console.log('blocked')
+								camera.position.z = -249914;
+							}
+						} else {
+							if (camera.position.z < -249914) {
+									console.log('blocked')
+								camera.position.z = -249914;
+							}
+						}
+
+
+
+							if(camera.position.z > 249914) {
+								camera.position.z = 249914;
+							}
+							if (camera.position.x < -249914) {
+								camera.position.x = -249914;
+							}
+							if(camera.position.x > 249914) {
+								camera.position.x = 249914;
+							}
+							if (camera.position.y < -249914) {
+								camera.position.y = -249914;
+							}
+							if(camera.position.y > 249914) {
+								camera.position.y = 249914;
+							}
+				}
+			}
+
+				//phase 2
+				if (phase===2){
+				portal.material.color=new THREE.Vector3(0,0,Math.sin(time));
+				portal.scale.x=Math.sin(time);
+				
+			}
 				renderer.render(scene, camera);
 
 			}
