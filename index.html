@@ -30,15 +30,15 @@
 		</style>
 	</head>
 	<body>
-		<div id="container"></div>
-		<video id="video" src="trippyrain.mp4" loop style="display:none"></video>
+		<video id="video" src="trippyrain.mp4" muted loop style="display:none"></video>
+		<audio id="raingurl" src="raingurl.mp3" loop></audio>
 		<script src="build/three.js"></script>
 		<script src="js/libs/stats.min.js"></script>
-		<script src="js/libs/dat.gui.min.js"></script>
+		<!-- <script src="js/libs/dat.gui.min.js"></script> -->
 
-		<script src="js/shaders/CopyShader.js"></script>
+		<!-- <script src="js/shaders/CopyShader.js"></script> -->
 
-		<script src="js/postprocessing/EffectComposer.js"></script>
+		<!-- <script src="js/postprocessing/EffectComposer.js"></script>
 		<script src="js/postprocessing/ClearPass.js"></script>
 		<script src="js/postprocessing/RenderPass.js"></script>
 		<script src="js/postprocessing/TexturePass.js"></script>
@@ -46,24 +46,23 @@
 		<script src="js/postprocessing/ShaderPass.js"></script>
 		<script src="js/THREEx.KeyboardState.js"></script>
 <script src="js/THREEx.FullScreen.js"></script>
-<script src="js/THREEx.WindowResize.js"></script>
-
+<script src="js/THREEx.WindowResize.js"></script> -->
+		<script src="js/OrientationControls.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/FirstPersonControls.js"></script>
 
-		<script src="js/virtualjoystick.js"></script>
-<script src="js/touch-fps-controls.js"></script>
-
+		<!-- <script src="js/virtualjoystick.js"></script>
+<script src="js/touch-fps-controls.js"></script> -->
+<div style="position: absolute;">
 <button id="test" 
-	style="user-select:none;position: absolute;background-color:red;margin:50px;"
+	style="user-select:none;background-color:red;margin:50px;"
 	>CHICKEN ASS</button>
 
 	<button id="test2" 
-	style="user-select:none;position: absolute;background-color:red;margin:80px;"
+	style="user-select:none;background-color:red;margin-top:150px;"
 	>CHICKEN ASS</button>
 
 
-		<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
 
 		<script>
 		function getRandomInt(min, max) {
@@ -71,6 +70,7 @@
 							max = Math.floor(max);
 							return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 						}
+		var colors = ['#1DABD9','#ff57e0','#766cff']
 		function makeBoxLand(){
 			var geometry = new THREE.BoxGeometry( 500, 500, 500 );
 				
@@ -78,8 +78,20 @@
 				camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 				for ( var i = 0; i < 1000; i ++ ) {
-
-					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: .4, transparent:true } ) );
+					var color = colors[getRandomInt(0,colors.length)];
+					var opacity = .4;
+					var name="normal";
+					if (i===100 ||
+						i===200 ||
+						i===300 ||
+						i===400){
+						color="yellow";
+						opacity = 1;
+						name = "yeller";
+					}
+					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color, opacity, transparent:true } ) );
+					
+					object.name = name;
 					// object.position.x = getRandomInt(-250000,250000);
 					// object.position.y = getRandomInt(-250000,250000);
 					// object.position.z = getRandomInt(-250000,250000);
@@ -118,9 +130,24 @@
 
 			var objects = [];
 			var portal;
-			var phase = 1;
+			var phase = 2;
 
-			var vidTexture
+			var video = document.getElementById('video');
+			console.log(video);
+			var vidTexture;
+
+			var raingurl = document.getElementById('raingurl');
+			raingurl.playbackRate = 0.1;
+			var frequencyData = new Uint8Array(200);
+			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+			var audioSrc = audioCtx.createMediaElementSource(raingurl);
+			var analyser = audioCtx.createAnalyser();
+
+			audioSrc.connect(analyser);
+			audioSrc.connect(audioCtx.destination);
+			
+			var sphere;
+
 
 			init();
 			animate();
@@ -140,6 +167,7 @@
 				camera.position.z = -10000;
 				camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+				
 
 				camControls = new THREE.FirstPersonControls(camera);
 				camControls.lookSpeed = 0.4;
@@ -151,49 +179,32 @@
 				camControls.verticalMax = 2.0;
 				camControls.lon = -150;
 				camControls.lat = 120;
-		
+				
+				OrientControls = new THREE.DeviceOrientationControls( camera );
 
-
-			document.getElementById('test').addEventListener("click", function(){
+			
+			document.getElementById('test').addEventListener("touchstart", function(){
+				alert('click me')
 				camControls.activeLook = false;
 				camControls.moveForward = true;
 			})
 
-			document.getElementById('test2').addEventListener("click", function(){
+			// document.getElementById('test').addEventListener("touchstart", function(){
+			// 	alert('touch me')
+			// 	camControls.activeLook = false;
+			// 	camControls.moveForward = true;
+			// })
+
+			document.getElementById('test2').addEventListener("touchstart", function(){
+				alert('click me')
 				camControls.activeLook = true;
 				camControls.moveForward = false;
 			})
 				scene = new THREE.Scene();
 
 
-
-				//scene.background = new THREE.Color( 0x000000 );
-				console.log(scene);
-				// var geometry = new THREE.BoxGeometry( 100, 100, 100 );
-				
-				
-				// for ( var i = 0; i < 1000; i ++ ) {
-
-				// 	var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, opacity: 0.5 } ) );
-				// 	object.position.x = getRandomInt(-250000,250000);
-				// 	object.position.y = getRandomInt(-250000,250000);
-				// 	object.position.z = getRandomInt(-250000,250000);
-
-				// 	object.scale.x = Math.random() * 20 + 1;
-				// 	object.scale.y = Math.random() * 20 + 1;
-				// 	object.scale.z = Math.random() * 20 + 1;
-
-				// 	object.rotation.x = Math.random() * 2 * Math.PI;
-				// 	object.rotation.y = Math.random() * 2 * Math.PI;
-				// 	object.rotation.z = Math.random() * 2 * Math.PI;
-
-				// 	scene.add( object );
-
-				// 	objects.push( object );
-
-				// }
 					var geometry = new THREE.BoxGeometry(5000,5000,5000)
-					var material = new THREE.MeshBasicMaterial({color:"green", opacity:.3});
+					var material = new THREE.MeshBasicMaterial({color:"white", opacity:1});
 					switcher = new THREE.Mesh(geometry, material);
 					switcher.name = "switch";
 					switcher.data = {x:0,y:0,z:0};
@@ -206,19 +217,11 @@
 					portal.position.z = -249000;
 					scene.add(portal);
 
-				var imagePrefix = "images/dawnmountain-";
-				var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-				var imageSuffix = ".png";
 
 				var skyGeometry = new THREE.CubeGeometry(500000,500000,500000);
-
+				
 				var material_array = [];
 
-				var video = document.getElementById('video');
-				video.play();
-				document.body.addEventListener('click', function(){
-					video.play();
-				}, false);
 				vidTexture = new THREE.VideoTexture( video );
 				vidTexture.minFilter = THREE.LinearFilter;
 				vidTexture.magFilter = THREE.LinearFilter;
@@ -231,25 +234,22 @@
 					}));
 				}
 
+				var sgeo = new THREE.SphereGeometry(10000,20,20);
+				var raptorTexture = new THREE.TextureLoader().load('./images/raptor.png');
+				raptorTexture.wrapS = THREE.RepeatWrapping;
+				raptorTexture.wrapT = THREE.RepeatWrapping;
+				raptorTexture.repeat.set(20,10)
+				var smaterial = new THREE.MeshBasicMaterial({
+					map: raptorTexture,
+				})
+				sphere = new THREE.Mesh(sgeo, smaterial);
+				sphere.position.z = -300000;
+				scene.add(sphere);
+
+
 				var skyMaterial = new THREE.MeshFaceMaterial( material_array );
 				var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 				scene.add(skyBox);
-
-				// var PI2 = Math.PI * 2;
-				// particleMaterial = new THREE.SpriteCanvasMaterial( {
-
-				// 	color: 0xFFFFFF,
-				// 	program: function ( context ) {
-
-				// 		context.beginPath();
-				// 		context.arc( 0, 0, 0.5, 0, PI2, true );
-				// 		context.fill();
-
-				// 	}
-
-				// } );
-
-				//
 
 				raycaster = new THREE.Raycaster();
 				mouse = new THREE.Vector2();
@@ -294,6 +294,7 @@
 			function onDocumentMouseDown( event ) {
 
 				event.preventDefault();
+				
 
 				mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
 				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
@@ -308,11 +309,41 @@
 				
 
 				if ( intersects.length > 0 && distance < 20000 ) {
-					phase = 2;
-					if (intersects[0].object.name==="switch") makeBoxLand();
+					
+					if (intersects[0].object.name==="switch") {
+						video.play();
+						raingurl.play();
+						makeBoxLand();
+						}
+						console.log(intersects[0].object.name)
+					if (intersects[0].object.name==="yeller" && intersects[0].object.data!=="fucker"){
+						var changeColors = [0xFF0000, 0x00FF00, 0x551A8B, 0x0000FF]
+						intersects[ 0 ].object.material.color.setHex(changeColors[getRandomInt(0,changeColors.length)]);
+						var yellers = objects.filter(d => d.name==="yeller");
+						var counter = 0;
+						yellers.forEach(d => {
+							if (JSON.stringify(d.material.color) === "16711680") {
+								counter+=1
+								raingurl.playbackRate = .2 * counter;
+								d.data="fucker";
+							};
+						})
+						console.log(counter);
+						if (counter===4){ 
+							phase =2
+							var fuckers = objects.filter(d => d.name==="yeller");
+							fuckers.forEach(d => d.material.color.setHex(0x0000FF));
+						};
+					} 
+					if (intersects[0].object.name==="normal")
+					{
+						var {x,y,z} = intersects[ 0 ].object.scale;
+						console.log(x,y,z)
 
-					intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-
+						intersects[ 0 ].object.scale.x = x-1;
+						intersects[ 0 ].object.scale.y = y-1;
+						intersects[ 0 ].object.scale.z = z-1;
+					}
 				}
 			}
 
@@ -325,7 +356,8 @@
 				render();
 				stats.update();
 
-                camControls.update(delta);
+				camControls.update(delta);
+				OrientControls.update();
 
 
 			}
@@ -378,7 +410,9 @@
 
 					objects[i].rotation.y += Math.sin(Math.random()/20);
 					objects[i].rotation.x += Math.cos(Math.random())/200;
-					//objects[i].material.opacity = Math.sin(time);
+					if (objects[i].data==="fucker"){
+						objects[i].material.opacity = (1+Math.sin(time))/2;
+					}
 				}
 
 				//phase 1
@@ -426,7 +460,10 @@
 							}
 				}
 			}
-
+				sphere.scale.x = frequencyData[50]/100;
+				sphere.rotation.x += .01;
+				sphere.rotation.y += .05;
+				analyser.getByteFrequencyData(frequencyData);
 				//phase 2
 				if (phase===2){
 				portal.material.color=new THREE.Vector3(0,0,Math.sin(time));
