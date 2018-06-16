@@ -30,29 +30,13 @@
 		</style>
 	</head>
 	<body>
-		<video id="video" src="trippyrain.mp4" muted loop style="display:none"></video>
-		<audio id="raingurl" src="raingurl.mp3" loop></audio>
+		<video id="video" src="video/trippyrain.mp4" muted loop style="display:none"></video>
+		<audio id="raingurl" src="music/raingurl.mp3" loop></audio>
 		<script src="build/three.js"></script>
 		<script src="js/libs/stats.min.js"></script>
-		<!-- <script src="js/libs/dat.gui.min.js"></script> -->
-
-		<!-- <script src="js/shaders/CopyShader.js"></script> -->
-
-		<!-- <script src="js/postprocessing/EffectComposer.js"></script>
-		<script src="js/postprocessing/ClearPass.js"></script>
-		<script src="js/postprocessing/RenderPass.js"></script>
-		<script src="js/postprocessing/TexturePass.js"></script>
-		<script src="js/postprocessing/CubeTexturePass.js"></script>
-		<script src="js/postprocessing/ShaderPass.js"></script>
-		<script src="js/THREEx.KeyboardState.js"></script>
-<script src="js/THREEx.FullScreen.js"></script>
-<script src="js/THREEx.WindowResize.js"></script> -->
 		<script src="js/OrientationControls.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/FirstPersonControls.js"></script>
-
-		<!-- <script src="js/virtualjoystick.js"></script>
-<script src="js/touch-fps-controls.js"></script> -->
 <div style="position: absolute;">
 <button id="test" 
 	style="user-select:none;background-color:red;margin:50px;"
@@ -137,6 +121,7 @@
 			var vidTexture;
 
 			var raingurl = document.getElementById('raingurl');
+			raingurl.load();
 			raingurl.playbackRate = 0.1;
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -180,7 +165,7 @@
 				camControls.lon = -150;
 				camControls.lat = 120;
 				
-				//OrientControls = new THREE.DeviceOrientationControls( camera );
+				OrientControls = new THREE.DeviceOrientationControls( camera );
 
 			
 			document.getElementById('test').addEventListener("touchstart", function(){
@@ -234,7 +219,7 @@
 					}));
 				}
 
-				var sgeo = new THREE.SphereGeometry(10000,20,20);
+				var sgeo = new THREE.SphereGeometry(100000,20,20);
 				var raptorTexture = new THREE.TextureLoader().load('./images/raptor.png');
 				raptorTexture.wrapS = THREE.RepeatWrapping;
 				raptorTexture.wrapT = THREE.RepeatWrapping;
@@ -243,7 +228,7 @@
 					map: raptorTexture,
 				})
 				sphere = new THREE.Mesh(sgeo, smaterial);
-				sphere.position.z = -300000;
+				sphere.position.z = -400000;
 				scene.add(sphere);
 
 
@@ -357,7 +342,7 @@
 				stats.update();
 
 				camControls.update(delta);
-				//OrientControls.update();
+				OrientControls.update();
 
 
 			}
