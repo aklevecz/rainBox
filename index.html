@@ -124,6 +124,7 @@
 			raingurl.playbackRate = 1;
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+			var analyser;
 
 			
 			var sphere;
@@ -136,7 +137,7 @@
 
 				
 				var audioSrc = audioCtx.createMediaElementSource(raingurl);
-				var analyser = audioCtx.createAnalyser();
+				analyser = audioCtx.createAnalyser();
 
 				audioSrc.connect(analyser);
 				audioSrc.connect(audioCtx.destination);
