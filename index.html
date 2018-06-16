@@ -135,12 +135,6 @@
 
 			function init() {
 
-				
-				var audioSrc = audioCtx.createMediaElementSource(raingurl);
-				analyser = audioCtx.createAnalyser();
-
-				audioSrc.connect(analyser);
-				audioSrc.connect(audioCtx.destination);
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -299,6 +293,11 @@
 					if (intersects[0].object.name==="switch") {
 						//video.play();
 						raingurl.play();
+						var audioSrc = audioCtx.createMediaElementSource(raingurl);
+						analyser = audioCtx.createAnalyser();
+
+						audioSrc.connect(analyser);
+						audioSrc.connect(audioCtx.destination);
 						makeBoxLand();
 						}
 						console.log(intersects[0].object.name)
