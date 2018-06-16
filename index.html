@@ -445,10 +445,13 @@
 							}
 				}
 			}
+			if (analyser){
+				analyser.getByteFrequencyData(frequencyData);
+
 				sphere.scale.x = frequencyData[50]/100;
+			}
 				sphere.rotation.x += .01;
 				sphere.rotation.y += .05;
-				analyser.getByteFrequencyData(frequencyData);
 				//phase 2
 				if (phase===2){
 				portal.material.color=new THREE.Vector3(0,0,Math.sin(time));
