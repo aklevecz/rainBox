@@ -317,8 +317,9 @@
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
 						video.play();
+						raingurl.pause();
+						raingurl.playbackRate = .2;
 						raingurl.play();
-						//raingurl.playbackRate = .2;
 						var audioSrc = audioCtx.createMediaElementSource(raingurl);
 						analyser = audioCtx.createAnalyser();
 
