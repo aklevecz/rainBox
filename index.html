@@ -147,7 +147,6 @@
 			var raingurl = document.getElementById('raingurl');
 
 			var os = getMobileOperatingSystem();
-			alert(os);
 			if (os!=="ios") raingurl.playbackRate = 0.2;
 			
 			var frequencyData = new Uint8Array(200);
@@ -160,7 +159,7 @@
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(){
 				raingurl.load();
-				document.getElementById('mobileControls').style.display="show";
+				document.getElementById('mobileControls').style.display="block";
 				mobile=true;
 			})
 			begin.addEventListener('click', function(){
@@ -264,7 +263,6 @@
 				mouse = new THREE.Vector2();
 
 				renderer = new THREE.WebGLRenderer({ alpha: true } );
-				//renderer.setClearColor(new THREE.Color(0x000, 1.0));
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
@@ -331,7 +329,6 @@
 						audioSrc.connect(audioCtx.destination);
 						makeBoxLand();
 						}
-						console.log(intersects[0].object.name)
 					if (intersects[0].object.name==="yeller" && intersects[0].object.data!=="fucker"){
 						var changeColors = [0xFF0000, 0x00FF00, 0x551A8B, 0x0000FF]
 						intersects[ 0 ].object.material.color.setHex(changeColors[getRandomInt(0,changeColors.length)]);
@@ -344,7 +341,6 @@
 								d.data="fucker";
 							};
 						})
-						console.log(counter);
 						if (counter===4){ 
 							phase =2
 							var fuckers = objects.filter(d => d.name==="yeller");
@@ -354,7 +350,6 @@
 					if (intersects[0].object.name==="normal")
 					{
 						var {x,y,z} = intersects[ 0 ].object.scale;
-						console.log(x,y,z)
 
 						intersects[ 0 ].object.scale.x = x-1;
 						intersects[ 0 ].object.scale.y = y-1;
