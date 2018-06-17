@@ -133,24 +133,25 @@
 
 			
 			var sphere;
-
+			var mobile = false;
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(e){
 				console.log(e.type)
 				this.remove();
-				init(true);
+				mobile = true;
+				init();
 				animate();
 			})
-			// begin.addEventListener('click', function(e){
-			// 	console.log(e.type)
-			// 	this.remove();
-			// 	init();
-			// 	animate();
-			// })
-			init(true);
+			begin.addEventListener('mousedown', function(e){
+				console.log(e.type)
+				this.remove();
+				init();
 				animate();
+			})
+			// init();
+			// animate();
 
-			function init(mobile) {
+			function init() {
 
 
 				container = document.createElement( 'div' );
