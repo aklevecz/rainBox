@@ -236,7 +236,7 @@
 
 
 					var geometry = new THREE.BoxGeometry(5000,5000,5000)
-					var material = new THREE.MeshBasicMaterial({color:"white", opacity:1});
+					var material = new THREE.MeshBasicMaterial({color:"white", opacity:.1});
 					switcher = new THREE.Mesh(geometry, material);
 					switcher.name = "switch";
 					switcher.data = {x:0,y:0,z:0};
@@ -359,6 +359,7 @@
 					console.log(intersects[0].object.name);
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
+						scene.remove(switcher);
 						video.play();
 						raingurl.pause();
 						if (os!=="ios") raingurl.playbackRate = 0.2;
@@ -425,7 +426,10 @@
 				vidTexture.needsUpdate = true;
 				
 
-				
+				if (raingurl.readyState > 3){
+					switcher.material.opacity = 1;
+					switcher.material.color.setHex(0x00FF00);
+				}
 				
 				for (var i = 0; i < objects.length ; i++){
 					if (objects[i].name!=="nugget"){
