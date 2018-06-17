@@ -134,9 +134,10 @@
 
 			
 			var sphere;
-			var mobile = true;
+			var mobile = false;
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(){
+				raingurl.load();
 				mobile=true;
 			})
 			begin.addEventListener('click', function(){
