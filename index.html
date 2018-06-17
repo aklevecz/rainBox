@@ -2,51 +2,56 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - postprocessing backgrounds</title>
+		<title>raingurl</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
-			body {
-				margin: 0px;
-				background-color: #000;
-				overflow: hidden;
-				font-family:Monospace;
-				font-size:13px;
-				margin: 0px;
-				text-align:center;
-				overflow: hidden;
-			}
-
-			a { color: #88f; }
-
-			#info {
-				color: #fff;
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				display:block;
-			}
-		</style>
+				body {
+					margin: 0px;
+					background-color: #000;
+					overflow: hidden;
+					font-family:Monospace;
+					font-size:13px;
+					margin: 0px;
+					text-align:center;
+					overflow: hidden;
+				}
+				a { color: #88f; }
+				#info {
+					color: #fff;
+					position: absolute;
+					top: 10px;
+					width: 100%;
+					text-align: center;
+					display:block;
+				}
+			</style>
 	</head>
 	<body>
 		<video id="video" src="video/trippyrain.mp4" muted loop style="display:none" playsinline></video>
-		<audio preload="true" id="raingurl" src="music/raingurl.mp3" loop type="audio/mpeg" controls></audio>
-		<script src="build/three.js"></script>
-		<script src="js/libs/stats.min.js"></script>
-		<script src="js/OrientationControls.js"></script>
-		<script src="js/OrbitControls.js"></script>
-		<script src="js/FirstPersonControls.js"></script>
-<div style="position: absolute;">
-<button id="test" 
-	style="user-select:none;background-color:red;margin:50px;"
-	>FORWARD</button>
+		<audio preload="true" id="raingurl" src="music/raingurl.mp3" loop type="audio/mpeg"></audio>
 
-	<button id="test2" 
-	style="user-select:none;background-color:red;margin-top:150px;"
-	>BACKWARD</button>
+		<button id="begin">BEGIN</button>
 
+		<div id="mobileControls" style="position: absolute;display:none;">
+			<button id="test" 
+				style="user-select:none;background-color:red;margin:50px;"
+				>
+				FORWARD
+			</button>
 
+			<button id="test2" 
+				style="user-select:none;background-color:red;margin-top:150px;"
+				>
+				BACKWARD
+			</button>
+		</div>
+
+<script src="build/three.js"></script>
+<script src="js/libs/stats.min.js"></script>
+<script src="js/OrientationControls.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/FirstPersonControls.js"></script>
 
 		<script>
 		function getRandomInt(min, max) {
@@ -121,7 +126,7 @@
 			var vidTexture;
 
 			var raingurl = document.getElementById('raingurl');
-			raingurl.playbackRate = 1;
+			raingurl.playbackRate = .2;
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 			var analyser;
@@ -129,11 +134,23 @@
 			
 			var sphere;
 
+			var begin = document.getElementById('begin');
+			begin.addEventListener('touchstart', function(e){
+				console.log(e.type)
+				this.remove();
+				init(true);
+				animate();
+			})
+			// begin.addEventListener('click', function(e){
+			// 	console.log(e.type)
+			// 	this.remove();
+			// 	init();
+			// 	animate();
+			// })
+			init(true);
+				animate();
 
-			init();
-			animate();
-
-			function init() {
+			function init(mobile) {
 
 
 				container = document.createElement( 'div' );
@@ -160,7 +177,7 @@
 				camControls.lon = -150;
 				camControls.lat = 120;
 				
-				OrientControls = new THREE.DeviceOrientationControls( camera );
+				if (mobile) OrientControls = new THREE.DeviceOrientationControls( camera );
 
 			
 			document.getElementById('test').addEventListener("touchstart", function(){
@@ -342,7 +359,7 @@
 				stats.update();
 
 				camControls.update(delta);
-				OrientControls.update();
+				if (mobile) OrientControls.update();
 
 
 			}
