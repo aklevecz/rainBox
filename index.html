@@ -134,12 +134,11 @@
 
 			
 			var sphere;
-			var mobile = false;
+			var mobile = true;
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(){
 				raingurl.load();
 				mobile=true;
-				OrientControls = new THREE.DeviceOrientationControls( camera )
 			})
 			begin.addEventListener('click', function(){
 				raingurl.load();
