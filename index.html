@@ -202,14 +202,14 @@
 			
 			document.getElementById('test').addEventListener("touchstart", function(){
 				camControls.activeLook = false;
-				//camControls.moveForward = true;
-				alert(raingurl.readyState);
+				camControls.moveForward = true;
+				//alert(raingurl.readyState);
 			})
 
 			document.getElementById('test2').addEventListener("touchstart", function(){
 				camControls.activeLook = true;
 				camControls.moveForward = false;
-				raingurl.load();
+				//raingurl.load();
 			})
 				scene = new THREE.Scene();
 
