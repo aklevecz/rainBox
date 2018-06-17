@@ -33,18 +33,18 @@
 
 		<button id="begin">BEGIN</button>
 
-		<div id="mobileControls" style="position:absolute;bottom:10px;width:100%;height:15%;display:flex;justify-content:space-between;">
+		<div id="mobileControls" style="position:absolute;bottom:10px;width:100%;height:15%;display:none;justify-content:space-between;">
 			<div id="test" 
-				style="user-select:none;background-color:red;width:40%;height:90%;margin-left:6%;"
+				style="user-select:none;background-color:#00ff99;width:40%;height:90%;margin-left:6%;"
 				>
-				/\
 		</div>
 
+	
+
 			<div id="test2" 
-				style="user-select:none;background-color:red;width:40%;height:90%;margin-right:6%;"
+				style="user-select:none;background-color:#ff3300;width:40%;height:90%;margin-right:6%;"
 				>
-				[]
-	</div>
+		</div>
 		</div>
 
 <script src="build/three.js"></script>
@@ -176,9 +176,8 @@
 				// position and point the camera to the center of the scene
 				camera.position.x = 100;
 				camera.position.y = 10;
-				// camera.position.z = -10000;
-				// camera.lookAt(new THREE.Vector3(0, 0, 0));
-				camera.position.z = -260000;
+				camera.position.z = -10000;
+				camera.lookAt(new THREE.Vector3(0, 0, 0));
 				camera.lookAt(new THREE.Vector3(0, 0, -60000));
 
 				
@@ -262,9 +261,12 @@
 				raptorTexture.repeat.set(20,10)
 				var smaterial = new THREE.MeshBasicMaterial({
 					map: raptorTexture,
+					color: 0xFF0000,
 				})
 				sphere2 = new THREE.Mesh(sgeo, smaterial);
 				sphere2.position.z = -700000;
+				sphere2.name = "nugget";
+				objects.push(sphere2);
 				scene.add(sphere2);
 
 
@@ -329,6 +331,7 @@
 				
 
 				if ( intersects.length > 0 && distance < 20000 ) {
+					console.log(intersects[0].object.name);
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
 						//video.play();
@@ -399,43 +402,45 @@
 				
 				
 				for (var i = 0; i < objects.length ; i++){
-					var {x,y,z} = objects[i].data;
-					
-					
-					if (x>0){
-						if (x > objects[i].position.x){
-							objects[i].position.x+=100
+					if (objects[i].name!=="nugget"){
+						var {x,y,z} = objects[i].data;
+						
+						
+						if (x>0){
+							if (x > objects[i].position.x){
+								objects[i].position.x+=100
+							}
+						} else {
+							if (x < objects[i].position.x){
+								objects[i].position.x-=100
+							}
 						}
-					} else {
-						if (x < objects[i].position.x){
-							objects[i].position.x-=100
+						
+						if (y>0){
+							if (y > objects[i].position.y){
+								objects[i].position.y+=100
+							}
+						} else {
+							if (y < objects[i].position.y){
+								objects[i].position.y-=100
+							}
 						}
-					}
-					
-					if (y>0){
-						if (y > objects[i].position.y){
-							objects[i].position.y+=100
-						}
-					} else {
-						if (y < objects[i].position.y){
-							objects[i].position.y-=100
-						}
-					}
 
-					if (z > 0) {
-						if (z > objects[i].position.z){
-							objects[i].position.z+=100
+						if (z > 0) {
+							if (z > objects[i].position.z){
+								objects[i].position.z+=100
+							}
+						} else{
+							if (z < objects[i].position.z){
+								objects[i].position.z-=100
+							}
 						}
-					} else{
-						if (z < objects[i].position.z){
-							objects[i].position.z-=100
-						}
-					}
 
-					objects[i].rotation.y += Math.sin(Math.random()/20);
-					objects[i].rotation.x += Math.cos(Math.random())/200;
-					if (objects[i].data==="fucker"){
-						objects[i].material.opacity = (1+Math.sin(time))/2;
+						objects[i].rotation.y += Math.sin(Math.random()/20);
+						objects[i].rotation.x += Math.cos(Math.random())/200;
+						if (objects[i].data==="fucker"){
+							objects[i].material.opacity = (1+Math.sin(time))/2;
+						}
 					}
 				}
 
