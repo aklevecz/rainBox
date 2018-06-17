@@ -126,6 +126,7 @@
 			var vidTexture;
 
 			var raingurl = document.getElementById('raingurl');
+			
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 			var analyser;
@@ -139,6 +140,7 @@
 			})
 			begin.addEventListener('click', function(){
 				raingurl.load();
+				raingurl.playbackRate = 0.5;
 				init();
 				animate();
 			})
@@ -317,7 +319,7 @@
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
 						video.play();
-						raingurl.playbackRate = 0.5;
+						
 						raingurl.play();
 						var audioSrc = audioCtx.createMediaElementSource(raingurl);
 						analyser = audioCtx.createAnalyser();
