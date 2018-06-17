@@ -126,6 +126,7 @@
 			var vidTexture;
 
 			var raingurl = document.getElementById('raingurl');
+			raingurl.playbackRate = 0.2;
 			
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -143,6 +144,9 @@
 				init();
 				animate();
 			})
+
+				init();
+				animate();
 			// begin.addEventListener('touchstart', function(e){
 			// 	alert(e.type)
 			// 	this.remove();
@@ -321,7 +325,6 @@
 						
 						raingurl.play();
 
-						setTimeout(()=>{raingurl.pause();raingurl.playbackRate=0.5;raingurl.play()},2000);
 						var audioSrc = audioCtx.createMediaElementSource(raingurl);
 						analyser = audioCtx.createAnalyser();
 
