@@ -159,7 +159,7 @@
 
 			var objects = [];
 			var portal;
-			var phase = 2;
+			var phase = 1;
 
 			var video = document.getElementById('video');
 			console.log(video);
@@ -360,7 +360,7 @@
 					console.log(intersects[0].object.name);
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
-						//video.play();
+						video.play();
 						
 						raingurl.play();
 
