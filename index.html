@@ -33,17 +33,17 @@
 
 		<button id="begin">BEGIN</button>
 
-		<div id="mobileControls" style="position: absolute;display:none;">
+		<div id="mobileControls" style="position:absolute;bottom:10px;width:100%;height:15%;">
 			<button id="test" 
-				style="user-select:none;background-color:red;margin:50px;"
+				style="user-select:none;background-color:red;width:40%;height:90%;"
 				>
-				FORWARD
+				/\
 			</button>
 
 			<button id="test2" 
-				style="user-select:none;background-color:red;margin-top:150px;"
+				style="user-select:none;background-color:red;width:40%;height:90%;"
 				>
-				BACKWARD
+				[]
 			</button>
 		</div>
 
@@ -100,9 +100,6 @@
 					var object = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color, opacity, transparent:true } ) );
 					
 					object.name = name;
-					// object.position.x = getRandomInt(-250000,250000);
-					// object.position.y = getRandomInt(-250000,250000);
-					// object.position.z = getRandomInt(-250000,250000);
 					object.data = {x:getRandomInt(-250000,250000),
 								   y:getRandomInt(-250000,250000),
 								   z:getRandomInt(-250000,250000)};
