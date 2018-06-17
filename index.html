@@ -139,6 +139,7 @@
 			begin.addEventListener('touchstart', function(){
 				raingurl.load();
 				mobile=true;
+				OrientControls = new THREE.DeviceOrientationControls( camera )
 			})
 			begin.addEventListener('click', function(){
 				raingurl.load();
