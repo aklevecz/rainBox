@@ -168,8 +168,7 @@
 			var raingurl = document.getElementById('raingurl');
 
 			var os = getMobileOperatingSystem();
-			if (os!=="ios") raingurl.playbackRate = 0.2;
-			alert(os, raingurl.playbackRate);
+			
 			
 			var frequencyData = new Uint8Array(200);
 			var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -361,7 +360,8 @@
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
 						video.play();
-						
+						raingurl.pause();
+						if (os!=="ios") raingurl.playbackRate = 0.2;
 						raingurl.play();
 
 						var audioSrc = audioCtx.createMediaElementSource(raingurl);
