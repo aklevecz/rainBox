@@ -160,6 +160,7 @@
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(){
 				raingurl.load();
+				document.getElementById('mobileControls').style.display="show";
 				mobile=true;
 			})
 			begin.addEventListener('click', function(){
@@ -202,12 +203,6 @@
 				//camControls.moveForward = true;
 				alert(raingurl.readyState);
 			})
-
-			// document.getElementById('test').addEventListener("touchstart", function(){
-			// 	alert('touch me')
-			// 	camControls.activeLook = false;
-			// 	camControls.moveForward = true;
-			// })
 
 			document.getElementById('test2').addEventListener("touchstart", function(){
 				camControls.activeLook = true;
