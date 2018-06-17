@@ -136,14 +136,14 @@
 			var mobile = false;
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(e){
-				console.log(e.type)
+				alert(e.type)
 				this.remove();
 				mobile = true;
 				init();
 				animate();
 			})
 			begin.addEventListener('mousedown', function(e){
-				console.log(e.type)
+				alert(e.type)
 				this.remove();
 				init();
 				animate();
