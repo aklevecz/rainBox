@@ -135,19 +135,26 @@
 			var sphere;
 			var mobile = false;
 			var begin = document.getElementById('begin');
-			begin.addEventListener('touchstart', function(e){
-				alert(e.type)
-				this.remove();
-				mobile = true;
+			begin.addEventListener('touchstart', function(){
+				mobile=true;
+			})
+			begin.addEventListener('click', function(){
 				init();
 				animate();
 			})
-			begin.addEventListener('mousedown', function(e){
-				alert(e.type)
-				this.remove();
-				init();
-				animate();
-			})
+			// begin.addEventListener('touchstart', function(e){
+			// 	alert(e.type)
+			// 	this.remove();
+			// 	mobile = true;
+			// 	init();
+			// 	animate();
+			// })
+			// begin.addEventListener('mousedown', function(e){
+			// 	alert(e.type)
+			// 	this.remove();
+			// 	init();
+			// 	animate();
+			// })
 			// init();
 			// animate();
 
