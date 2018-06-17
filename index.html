@@ -156,35 +156,16 @@
 
 			
 			var sphere;
-			var mobile = true;
+			var mobile = false;
 			var begin = document.getElementById('begin');
 			begin.addEventListener('touchstart', function(){
 				raingurl.load();
 				mobile=true;
 			})
-			// begin.addEventListener('click', function(){
-			// 	raingurl.load();
-			// 	init();
-			// 	animate();
-			// })
-
+			begin.addEventListener('click', function(){
 				init();
 				animate();
-			// begin.addEventListener('touchstart', function(e){
-			// 	alert(e.type)
-			// 	this.remove();
-			// 	mobile = true;
-			// 	init();
-			// 	animate();
-			// })
-			// begin.addEventListener('mousedown', function(e){
-			// 	alert(e.type)
-			// 	this.remove();
-			// 	init();
-			// 	animate();
-			// })
-			// init();
-			// animate();
+			})
 
 			function init() {
 
