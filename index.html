@@ -78,6 +78,7 @@
 <script src="js/FirstPersonControls.js"></script>
 
 		<script>
+			history.replaceState({}, "robot machaoatoa", "TeemoSauce")
 		function getMobileOperatingSystem() {
 			var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -159,13 +160,14 @@
 
 			var objects = [];
 			var portal;
-			var phase = 1;
+			var phase = 2;
 
 			var video = document.getElementById('video');
 			console.log(video);
 			var vidTexture;
 
 			var raingurl = document.getElementById('raingurl');
+			//raingurl.play();
 
 			var os = getMobileOperatingSystem();
 			
@@ -275,7 +277,7 @@
 					map: raptorTexture,
 				})
 				sphere = new THREE.Mesh(sgeo, smaterial);
-				sphere.position.z = -1400000;
+				sphere.position.z = -1500000;
 				scene.add(sphere);
 
 
@@ -289,7 +291,7 @@
 					color: 0xFF0000,
 				})
 				sphere2 = new THREE.Mesh(sgeo, smaterial);
-				sphere2.position.z = -700000;
+				sphere2.position.z = -600000;
 				sphere2.name = "nugget";
 				objects.push(sphere2);
 				scene.add(sphere2);
@@ -362,7 +364,7 @@
 						scene.remove(switcher);
 						video.play();
 						raingurl.pause();
-						if (os!=="ios") raingurl.playbackRate = 0.2;
+						if (os!=="ios") raingurl.playbackRate =.2;
 						raingurl.play();
 
 						var audioSrc = audioCtx.createMediaElementSource(raingurl);
@@ -493,6 +495,16 @@
 									console.log('blocked')
 								camera.position.z = -249914;
 							}
+							//push thru
+							if (camera.position.z < -249920 &&
+								(
+									(p.x > 50000 || p.x < -50000) || 
+									(p.y > 50000 || p.y < -50000))
+								
+							   ) {
+									console.log('blocked')
+								camera.position.z = -249950;
+							}
 						} else {
 							if (camera.position.z < -249914) {
 									console.log('blocked')
@@ -522,7 +534,7 @@
 			if (analyser){
 				analyser.getByteFrequencyData(frequencyData);
 
-				sphere.scale.x = frequencyData[50]/100;
+				sphere.scale.x = frequencyData[50]/150;
 			}
 				sphere.rotation.x += .01;
 				sphere.rotation.y += .05;
