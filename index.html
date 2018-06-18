@@ -80,7 +80,7 @@
 		<script>
 
 			var lemon = window.location.search.split('?')[1];
-			window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/taco");
+			window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/");
 			if(!lemon) lemon = "lemon";
 
 		function getMobileOperatingSystem() {
@@ -172,6 +172,9 @@
 
 			var raingurl = document.getElementById('raingurl');
 			//raingurl.play();
+
+			var raptorTexture = new THREE.TextureLoader().load('./images/raptor.png');
+
 
 			var os = getMobileOperatingSystem();
 			
@@ -273,7 +276,6 @@
 				}
 
 				var sgeo = new THREE.SphereGeometry(700000,20,20);
-				var raptorTexture = new THREE.TextureLoader().load('./images/raptor.png');
 				raptorTexture.wrapS = THREE.RepeatWrapping;
 				raptorTexture.wrapT = THREE.RepeatWrapping;
 				raptorTexture.repeat.set(20,10)
@@ -286,7 +288,6 @@
 
 
 								var sgeo = new THREE.SphereGeometry(7000,20,20);
-				var raptorTexture = new THREE.TextureLoader().load('./images/raptor.png');
 				raptorTexture.wrapS = THREE.RepeatWrapping;
 				raptorTexture.wrapT = THREE.RepeatWrapping;
 				raptorTexture.repeat.set(20,10)
