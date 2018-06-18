@@ -78,7 +78,12 @@
 <script src="js/FirstPersonControls.js"></script>
 
 		<script>
-			window.history.replaceState("", "robot machaoatoa", "TeemoSauce")
+			var lemon = window.location.search.split('?')[1].replace(/%27/g,'"') ;
+			console.log(lemon);
+			console.log(JSON.parse(lemon));
+			//window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/");
+			localStorage.setItem('lemon', 'lemon');
+
 		function getMobileOperatingSystem() {
 			var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
