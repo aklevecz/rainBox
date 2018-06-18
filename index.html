@@ -78,7 +78,12 @@
 <script src="js/FirstPersonControls.js"></script>
 
 		<script>
-			var lemon = window.location.search.split('?')[1].replace(/%27/g,'"') ;
+			
+			var lemon = window.location.search.split('?')[1]
+					.replace(/%27/g,"'")
+					.replace(/%7B/g,"{")
+					.replace(/%7D/g,"}")
+					.replace(/%3A/g,":")    ;
 			console.log(lemon);
 			console.log(JSON.parse(lemon));
 			//window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/");
