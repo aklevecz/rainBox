@@ -35,6 +35,7 @@
 	<body>
 		<video preload="true" id="video" src="video/trippyrain.mp4" muted loop style="display:none" playsinline></video>
 		<audio preload="true" id="raingurl" src="music/raingurl.mp3" loop type="audio/mpeg"></audio>
+		<img preload="true" id="raptor" src="images/raptor.png" style="display:none"/>
 
 		<div id="begin" style="user-select:none;cursor:pointer;">
 				<svg 
@@ -173,7 +174,7 @@
 			var raingurl = document.getElementById('raingurl');
 			//raingurl.play();
 
-			var raptorTexture = new THREE.TextureLoader().load('images/raptor.png');
+			var raptorTexture = new THREE.Texture(document.getElementById('raptor'));
 
 
 			var os = getMobileOperatingSystem();
