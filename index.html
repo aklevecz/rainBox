@@ -33,7 +33,7 @@
 			</style>
 	</head>
 	<body>
-		<video id="video" src="video/trippyrain.mp4" muted loop style="display:none" playsinline></video>
+		<video preload="true" id="video" src="video/trippyrain.mp4" muted loop style="display:none" playsinline></video>
 		<audio preload="true" id="raingurl" src="music/raingurl.mp3" loop type="audio/mpeg"></audio>
 
 		<div id="begin" style="user-select:none;cursor:pointer;">
@@ -78,16 +78,11 @@
 <script src="js/FirstPersonControls.js"></script>
 
 		<script>
-			
-			var lemon = window.location.search.split('?')[1]
-					.replace(/%22/g,'"')
-					.replace(/%7B/g,"{")
-					.replace(/%7D/g,"}")
-					.replace(/%3A/g,":")    ;
-			console.log(lemon);
-			console.log(JSON.parse(lemon));
-			window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/dolphlungren");
-			localStorage.setItem('lemon', 'lemon');
+
+			//var lemon = window.location.search.split('?')[1];
+			//console.log(lemon);
+			//window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/dolphlungren");
+			//localStorage.setItem('lemon', 'lemon');
 
 		function getMobileOperatingSystem() {
 			var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -170,7 +165,7 @@
 
 			var objects = [];
 			var portal;
-			var phase = 2;
+			var phase = 1;
 
 			var video = document.getElementById('video');
 			console.log(video);
@@ -303,6 +298,8 @@
 				sphere2 = new THREE.Mesh(sgeo, smaterial);
 				sphere2.position.z = -600000;
 				sphere2.name = "nugget";
+				sphere2.data = lemon;
+				
 				objects.push(sphere2);
 				scene.add(sphere2);
 
@@ -369,6 +366,8 @@
 
 				if ( intersects.length > 0 && distance < 20000 ) {
 					console.log(intersects[0].object.name);
+
+					if (intersects[0].object.name==="nugget") window.location="http://localhost:3000/yaejifinish/"+intersects[0].object.data;
 					
 					if (intersects[0].object.name==="switch" && raingurl.readyState > 3) {
 						scene.remove(switcher);
