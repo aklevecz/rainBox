@@ -57,18 +57,18 @@
 		   </svg>
 		</div>>
 
-		<div id="mobileControls" style="position:absolute;bottom:10px;width:100%;height:15%;display:none;justify-content:space-between;">
-			<div id="test" 
-				style="user-select:none;background-color:#00ff99;width:40%;height:90%;margin-left:6%;"
+		<div id="mobileControls" style="position:absolute;bottom:10px;width:100%;height:15%;display:none;justify-content:space-between;margin-bottom:5%;">
+			<div id="test" class="notmoving"
+				style="user-select:none;background-color:#00ff99;width:20vw;height:20vw;margin:0 auto;transform: rotate(45deg);"
 				>
 		</div>
 
 	
 
-			<div id="test2" 
+			<!-- <div id="test2" 
 				style="user-select:none;background-color:#ff3300;width:40%;height:90%;margin-right:6%;"
 				>
-		</div>
+		</div> -->
 		</div>
 
 <script src="build/three.js"></script>
@@ -194,7 +194,7 @@
 				mobile=true;
 			})
 			begin.addEventListener('click', function(){
-				setTimeout(window.history.pushState({chicken:"stateak"}, "robot machaoatoa", "/taco"),2000);
+				setTimeout(window.history.pushState({chicken:"stateak"}, "robot machaoatoa", "/yaejirain"),2000);
 				this.remove();
 				init();
 				animate();
@@ -230,18 +230,26 @@
 				
 				if (mobile) OrientControls = new THREE.DeviceOrientationControls( camera );
 
-			
+			//F55053 #00ff99
 			document.getElementById('test').addEventListener("touchstart", function(){
-				camControls.activeLook = false;
+				if(this.className==="notmoving"){
+				//camControls.activeLook = false;
 				camControls.moveForward = true;
+				this.style.backgroundColor = '#F55053'
+				this.className = "moving";
+				} else {
+					camControls.moveForward = false;
+					this.style.backgroundColor = '#00ff99';
+					this.className ="notmoving";
+				}
 				//alert(raingurl.readyState);
 			})
 
-			document.getElementById('test2').addEventListener("touchstart", function(){
-				camControls.activeLook = true;
-				camControls.moveForward = false;
-				//raingurl.load();
-			})
+			// document.getElementById('test2').addEventListener("touchstart", function(){
+			// 	camControls.activeLook = true;
+			// 	camControls.moveForward = false;
+			// 	//raingurl.load();
+			// })
 				scene = new THREE.Scene();
 
 
@@ -317,8 +325,8 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
 			
-				stats = new Stats();
-				container.appendChild( stats.dom );
+				// stats = new Stats();
+				// container.appendChild( stats.dom );
 
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
@@ -420,7 +428,7 @@
 				requestAnimationFrame( animate );
 
 				render();
-				stats.update();
+				//stats.update();
 
 				camControls.update(delta);
 				if (mobile) OrientControls.update();
