@@ -78,6 +78,7 @@
 <script src="js/FirstPersonControls.js"></script>
 
 		<script>
+		(function(){
 
 			var lemon = window.location.search.split('?')[1];
 			if(!lemon) lemon = "lemon";
@@ -284,7 +285,7 @@
 					}));
 				}
 
-				var sgeo = new THREE.SphereGeometry(700000,20,20);
+				var sgeo = new THREE.SphereGeometry(500000,20,20);
 				raptorTexture.wrapS = THREE.RepeatWrapping;
 				raptorTexture.wrapT = THREE.RepeatWrapping;
 				raptorTexture.repeat.set(20,10)
@@ -292,7 +293,7 @@
 					map: raptorTexture,
 				})
 				sphere = new THREE.Mesh(sgeo, smaterial);
-				sphere.position.z = -1500000;
+				sphere.position.z = -1000000;
 				scene.add(sphere);
 
 
@@ -305,7 +306,7 @@
 					color: 0xFF0000,
 				})
 				sphere2 = new THREE.Mesh(sgeo, smaterial);
-				sphere2.position.z = -600000;
+				sphere2.position.z = -400000;
 				sphere2.name = "nugget";
 				sphere2.data = lemon;
 				
@@ -555,7 +556,7 @@
 				sphere.scale.x = frequencyData[50]/150;
 			}
 				sphere.rotation.x += .01;
-				sphere.rotation.y += .05;
+				sphere.rotation.y += .01;
 				//phase 2
 				if (phase===2){
 				portal.material.color=new THREE.Vector3(0,0,Math.sin(time));
@@ -565,6 +566,7 @@
 				renderer.render(scene, camera);
 
 			}
+		}());
 
 		</script>
 	
