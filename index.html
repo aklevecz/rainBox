@@ -237,7 +237,7 @@
 				mobile=true;
 			})
 			begin.addEventListener('click', function(){
-				setTimeout(window.history.pushState({chicken:"stateak"}, "robot machaoatoa", "/yaejirain"),2000);
+				setTimeout(window.history.replaceState({chicken:"stateak"}, "robot machaoatoa", "/yaejirain"),2000);
 				document.getElementById('begin').style.display = "none";
 				init();
 				animate();
